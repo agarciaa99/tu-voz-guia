@@ -50,7 +50,7 @@ export function TestimonialsSection() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -66,7 +66,7 @@ export function TestimonialsSection() {
 
   const prevTestimonial = () => {
     setActiveIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
     );
   };
 
@@ -194,29 +194,6 @@ export function TestimonialsSection() {
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
-          </div>
-        </div>
-
-        {/* Company logos */}
-        <div
-          className={`mt-20 transition-all duration-700 delay-400 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <p className="text-center text-sm text-muted-foreground mb-8">
-            Trusted by teams at world-class companies
-          </p>
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
-            {["Figma", "Spotify", "Notion", "Linear", "Vercel", "Stripe"].map(
-              (company) => (
-                <span
-                  key={company}
-                  className="text-xl font-bold text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
-                >
-                  {company}
-                </span>
-              )
-            )}
           </div>
         </div>
       </div>

@@ -43,7 +43,7 @@ export function ShowcaseSection() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -70,7 +70,7 @@ export function ShowcaseSection() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
           <div className="max-w-2xl">
-            <div
+            {/* <div
               className={`inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-sm mb-6 transition-all duration-700 ${
                 isVisible
                   ? "opacity-100 translate-y-0"
@@ -79,7 +79,7 @@ export function ShowcaseSection() {
             >
               <Play className="w-4 h-4 text-accent" />
               <span className="text-muted-foreground">Velo en acción</span>
-            </div>
+            </div> */}
 
             <h2
               className={`text-4xl sm:text-5xl font-bold tracking-tight transition-all duration-700 delay-100 ${
@@ -102,13 +102,13 @@ export function ShowcaseSection() {
                 : "opacity-0 translate-y-4"
             }`}
           >
-            <Button
+            {/* <Button
               variant="outline"
               className="group rounded-full border-border/50 hover:border-accent/50 bg-transparent"
             >
               Ver todas las demos
               <ArrowUpRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Button>
+            </Button> */}
           </div>
         </div>
 

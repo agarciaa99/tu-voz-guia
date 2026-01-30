@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useCallback, useRef, useEffect } from "react"
-import Link from "next/link"
-import { useVoiceRecognition } from "@/features/app/hooks/use-voice-recognition"
-import { useSettings } from "@/lib/settings-context"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { useState, useCallback, useRef, useEffect } from "react";
+import Link from "next/link";
+import { useVoiceRecognition } from "@/features/app/hooks/use-voice-recognition";
+import { useSettings } from "@/lib/settings-context";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Mic,
   MicOff,
@@ -22,72 +22,77 @@ import {
   Settings,
   Command,
   Keyboard,
-} from "lucide-react"
-import { translations } from "@/lib/i18n/translations"
+} from "lucide-react";
+import { translations } from "@/lib/i18n/translations";
 
 interface SearchResult {
-  id: string
-  title: string
-  description: string
-  url: string
-  type: "web" | "action" | "answer"
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  type: "web" | "action" | "answer";
 }
 
 interface AIResponse {
-  interpretation: string
-  intent: string
-  results: SearchResult[]
-  suggestions: string[]
-  customCommandTriggered?: boolean
-  commandUrl?: string
+  interpretation: string;
+  intent: string;
+  results: SearchResult[];
+  suggestions: string[];
+  customCommandTriggered?: boolean;
+  commandUrl?: string;
 }
 
 export function VoiceSearchInterface() {
-  const { settings } = useSettings()
-  const [query, setQuery] = useState("")
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [aiResponse, setAiResponse] = useState<AIResponse | null>(null)
-  const [feedback, setFeedback] = useState<string>("")
-  const [feedbackType, setFeedbackType] = useState<"info" | "success" | "error">("info")
-  const inputRef = useRef<HTMLInputElement>(null)
-  const t = translations.voiceSearch
+  const { settings } = useSettings();
+  const [query, setQuery] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [aiResponse, setAiResponse] = useState<AIResponse | null>(null);
+  const [feedback, setFeedback] = useState<string>("");
+  const [feedbackType, setFeedbackType] = useState<
+    "info" | "success" | "error"
+  >("info");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const t = translations.voiceSearch;
 
-  const showFeedback = useCallback((message: string, type: "info" | "success" | "error" = "info") => {
-    setFeedback(message)
-    setFeedbackType(type)
-    setTimeout(() => setFeedback(""), 3000)
-  }, [])
+  const showFeedback = useCallback(
+    (message: string, type: "info" | "success" | "error" = "info") => {
+      setFeedback(message);
+      setFeedbackType(type);
+      setTimeout(() => setFeedback(""), 3000);
+    },
+    [],
+  );
 
   const getVoiceRate = useCallback(() => {
     switch (settings.voiceSpeed) {
       case "slow":
-        return 0.7
+        return 0.7;
       case "fast":
-        return 1.3
+        return 1.3;
       default:
-        return 1
+        return 1;
     }
-  }, [settings.voiceSpeed])
+  }, [settings.voiceSpeed]);
 
   const speak = useCallback(
     (text: string) => {
-      if (!settings.voiceFeedback || !("speechSynthesis" in window)) return
-      speechSynthesis.cancel()
-      const utterance = new SpeechSynthesisUtterance(text)
-      utterance.lang = settings.language
-      utterance.rate = getVoiceRate()
-      utterance.pitch = 1
-      speechSynthesis.speak(utterance)
+      if (!settings.voiceFeedback || !("speechSynthesis" in window)) return;
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = settings.language;
+      utterance.rate = getVoiceRate();
+      utterance.pitch = 1;
+      speechSynthesis.speak(utterance);
     },
     [settings.voiceFeedback, settings.language, getVoiceRate],
-  )
+  );
 
   const processWithAI = useCallback(
     async (text: string) => {
-      if (!text.trim()) return
+      if (!text.trim()) return;
 
-      setIsProcessing(true)
-      showFeedback(t.processing, "info")
+      setIsProcessing(true);
+      showFeedback(t.processing, "info");
 
       try {
         const response = await fetch("/api/voice-search", {
@@ -98,116 +103,128 @@ export function VoiceSearchInterface() {
             customCommands: settings.customCommands,
             language: settings.language,
           }),
-        })
+        });
 
-        if (!response.ok) throw new Error("Failed to process query")
+        if (!response.ok) throw new Error("Failed to process query");
 
-        const data: AIResponse = await response.json()
-        setAiResponse(data)
-        showFeedback(t.resultsReady, "success")
+        const data: AIResponse = await response.json();
+        setAiResponse(data);
+        showFeedback(t.resultsReady, "success");
 
-        if (settings.voiceFeedback && "speechSynthesis" in window && data.interpretation) {
-          speak(data.interpretation)
+        if (
+          settings.voiceFeedback &&
+          "speechSynthesis" in window &&
+          data.interpretation
+        ) {
+          speak(data.interpretation);
         }
 
         if (data.customCommandTriggered && data.commandUrl) {
-          window.open(data.commandUrl, "_blank", "noopener,noreferrer")
+          window.open(data.commandUrl, "_blank", "noopener,noreferrer");
         }
       } catch (error) {
-        console.error("AI processing error:", error)
-        showFeedback(t.processingError, "error")
-        speak(t.processingError)
+        console.error("AI processing error:", error);
+        showFeedback(t.processingError, "error");
+        speak(t.processingError);
       } finally {
-        setIsProcessing(false)
+        setIsProcessing(false);
       }
     },
-    [showFeedback, speak, settings.voiceFeedback, settings.customCommands, settings.language, t],
-  )
+    [
+      showFeedback,
+      speak,
+      settings.voiceFeedback,
+      settings.customCommands,
+      settings.language,
+      t,
+    ],
+  );
 
   const handleTranscript = useCallback(
     (transcript: string) => {
-      setQuery(transcript)
+      setQuery(transcript);
       if (transcript) {
-        processWithAI(transcript)
+        processWithAI(transcript);
       }
     },
     [processWithAI],
-  )
+  );
 
-  const { isListening, isSupported, startListening, stopListening } = useVoiceRecognition({
-    onTranscript: handleTranscript,
-    onListeningChange: (listening) => {
-      if (listening) {
-        showFeedback(t.listeningSpeak, "info")
-        speak(t.listeningSpeak)
-      }
-    },
-    onError: (error) => {
-      showFeedback(error, "error")
-      speak(error)
-    },
-    language: settings.language,
-    continuous: settings.continuousListening,
-  })
+  const { isListening, isSupported, startListening, stopListening } =
+    useVoiceRecognition({
+      onTranscript: handleTranscript,
+      onListeningChange: (listening) => {
+        if (listening) {
+          showFeedback(t.listeningSpeak, "info");
+          speak(t.listeningSpeak);
+        }
+      },
+      onError: (error) => {
+        showFeedback(error, "error");
+        speak(error);
+      },
+      language: settings.language,
+      continuous: settings.continuousListening,
+    });
 
   useEffect(() => {
     if (settings.autoListen && isSupported && !isListening) {
       const timer = setTimeout(() => {
-        startListening()
-      }, 500)
-      return () => clearTimeout(timer)
+        startListening();
+      }, 500);
+      return () => clearTimeout(timer);
     }
-  }, [settings.autoListen, isSupported, isListening, startListening])
+  }, [settings.autoListen, isSupported, isListening, startListening]);
 
   // Keyboard shortcut for voice
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === " " && e.ctrlKey) {
-        e.preventDefault()
+        e.preventDefault();
         if (isListening) {
-          stopListening()
+          stopListening();
         } else {
-          startListening()
+          startListening();
         }
       }
-    }
+    };
 
-    window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [isListening, startListening, stopListening])
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isListening, startListening, stopListening]);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (query.trim()) {
-      processWithAI(query)
+      processWithAI(query);
     }
-  }
+  };
 
   const handleVoiceToggle = () => {
     if (isListening) {
-      stopListening()
-      showFeedback(t.stoppedListening, "info")
+      stopListening();
+      showFeedback(t.stoppedListening, "info");
     } else {
-      startListening()
+      startListening();
     }
-  }
+  };
 
   const clearResults = () => {
-    setQuery("")
-    setAiResponse(null)
-    inputRef.current?.focus()
-  }
+    setQuery("");
+    setAiResponse(null);
+    inputRef.current?.focus();
+  };
 
   const getResultTypeLabel = (type: string) => {
     switch (type) {
       case "answer":
-        return t.typeAnswer
+        return t.typeAnswer;
       case "action":
-        return t.typeAction
+        return t.typeAction;
       default:
-        return t.typeWeb
+        return t.typeWeb;
     }
-  }
+  };
 
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col">
@@ -238,11 +255,14 @@ export function VoiceSearchInterface() {
               }`}
             >
               {feedbackType === "error" ? (
-                <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
               ) : feedbackType === "success" ? (
-                <Sparkles className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <Sparkles className="w-4 h-4 shrink-0" aria-hidden="true" />
               ) : (
-                <Volume2 className="w-4 h-4 flex-shrink-0 animate-pulse" aria-hidden="true" />
+                <Volume2
+                  className="w-4 h-4 shrink-0 animate-pulse"
+                  aria-hidden="true"
+                />
               )}
               <span className="text-sm">{feedback}</span>
             </div>
@@ -268,7 +288,10 @@ export function VoiceSearchInterface() {
               {/* Pulse rings when listening */}
               {isListening && (
                 <>
-                  <div className="absolute inset-0 rounded-full bg-accent/40 animate-pulse-ring" aria-hidden="true" />
+                  <div
+                    className="absolute inset-0 rounded-full bg-accent/40 animate-pulse-ring"
+                    aria-hidden="true"
+                  />
                   <div
                     className="absolute inset-0 rounded-full bg-accent/30 animate-pulse-ring delay-200"
                     aria-hidden="true"
@@ -284,16 +307,25 @@ export function VoiceSearchInterface() {
               <div
                 className={`relative w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isListening
-                    ? "bg-gradient-to-br from-accent to-glow-secondary shadow-xl shadow-accent/40 scale-105"
-                    : "bg-gradient-to-br from-secondary to-muted hover:from-secondary/80 hover:to-muted/80 group-hover:scale-105 group-hover:shadow-lg"
+                    ? "bg-linear-to-br from-accent to-glow-secondary shadow-xl shadow-accent/40 scale-105"
+                    : "bg-linear-to-br from-secondary to-muted hover:from-secondary/80 hover:to-muted/80 group-hover:scale-105 group-hover:shadow-lg"
                 } ${!isSupported || isProcessing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
               >
                 {isProcessing ? (
-                  <Loader2 className="w-10 h-10 sm:w-12 sm:h-12 text-foreground animate-spin" aria-hidden="true" />
+                  <Loader2
+                    className="w-10 h-10 sm:w-12 sm:h-12 text-foreground animate-spin"
+                    aria-hidden="true"
+                  />
                 ) : isListening ? (
-                  <MicOff className="w-10 h-10 sm:w-12 sm:h-12 text-accent-foreground" aria-hidden="true" />
+                  <MicOff
+                    className="w-10 h-10 sm:w-12 sm:h-12 text-accent-foreground"
+                    aria-hidden="true"
+                  />
                 ) : (
-                  <Mic className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" aria-hidden="true" />
+                  <Mic
+                    className="w-10 h-10 sm:w-12 sm:h-12 text-foreground"
+                    aria-hidden="true"
+                  />
                 )}
               </div>
             </button>
@@ -322,7 +354,9 @@ export function VoiceSearchInterface() {
             {/* Keyboard shortcut hint */}
             <p className="text-xs text-muted-foreground flex items-center gap-1.5">
               <Keyboard className="w-3 h-3" aria-hidden="true" />
-              <span>Ctrl + Espacio para {isListening ? "detener" : "escuchar"}</span>
+              <span>
+                Ctrl + Espacio para {isListening ? "detener" : "escuchar"}
+              </span>
             </p>
           </div>
 
@@ -363,7 +397,10 @@ export function VoiceSearchInterface() {
                   disabled={!query.trim() || isProcessing}
                 >
                   {isProcessing ? (
-                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                    <Loader2
+                      className="w-4 h-4 animate-spin"
+                      aria-hidden="true"
+                    />
                   ) : (
                     translations.common.search
                   )}
@@ -382,15 +419,26 @@ export function VoiceSearchInterface() {
                   : "bg-muted text-muted-foreground"
               }`}
             >
-              {settings.voiceFeedback ? <Volume2 className="w-3 h-3" /> : <VolumeX className="w-3 h-3" />}
-              <span>{settings.voiceFeedback ? "Audio activado" : "Audio desactivado"}</span>
+              {settings.voiceFeedback ? (
+                <Volume2 className="w-3 h-3" />
+              ) : (
+                <VolumeX className="w-3 h-3" />
+              )}
+              <span>
+                {settings.voiceFeedback
+                  ? "Audio activado"
+                  : "Audio desactivado"}
+              </span>
             </div>
 
             {/* Custom commands indicator */}
             {settings.customCommands.filter((c) => c.enabled).length > 0 && (
               <div className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-accent/10 text-accent">
                 <Command className="w-3 h-3" />
-                <span>{settings.customCommands.filter((c) => c.enabled).length} comandos</span>
+                <span>
+                  {settings.customCommands.filter((c) => c.enabled).length}{" "}
+                  comandos
+                </span>
               </div>
             )}
 
@@ -410,19 +458,23 @@ export function VoiceSearchInterface() {
               className="mb-6 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center gap-3"
               role="alert"
             >
-              <AlertCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+              <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span className="text-sm">{t.browserNotSupported}</span>
             </div>
           )}
 
           {/* AI Response */}
           {aiResponse && (
-            <div className="space-y-4 animate-fade-up" role="region" aria-label="Resultados de búsqueda">
+            <div
+              className="space-y-4 animate-fade-up"
+              role="region"
+              aria-label="Resultados de búsqueda"
+            >
               {/* AI Interpretation Card */}
               <div className="glass rounded-2xl p-5 glow-border">
                 <div className="flex items-start gap-3">
                   <div
-                    className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent to-glow-secondary flex items-center justify-center flex-shrink-0"
+                    className="w-9 h-9 rounded-xl bg-linear-to-br from-accent to-glow-secondary flex items-center justify-center shrink-0"
                     aria-hidden="true"
                   >
                     <Sparkles className="w-4 h-4 text-accent-foreground" />
@@ -433,8 +485,12 @@ export function VoiceSearchInterface() {
                         {t.aiInterpretation}
                       </span>
                       <span className="inline-flex items-center gap-1 glass rounded-full px-2 py-0.5 text-[10px]">
-                        <span className="text-muted-foreground">{t.intent}:</span>
-                        <span className="text-accent font-medium">{aiResponse.intent}</span>
+                        <span className="text-muted-foreground">
+                          {t.intent}:
+                        </span>
+                        <span className="text-accent font-medium">
+                          {aiResponse.intent}
+                        </span>
                       </span>
                       {aiResponse.customCommandTriggered && (
                         <span className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-[10px] font-medium">
@@ -443,7 +499,9 @@ export function VoiceSearchInterface() {
                         </span>
                       )}
                     </div>
-                    <p className="text-foreground text-base leading-relaxed">{aiResponse.interpretation}</p>
+                    <p className="text-foreground text-base leading-relaxed">
+                      {aiResponse.interpretation}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -481,7 +539,9 @@ export function VoiceSearchInterface() {
                               <h3 className="text-foreground font-medium text-sm group-hover:text-accent transition-colors truncate">
                                 {result.title}
                               </h3>
-                              <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{result.description}</p>
+                              <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                                {result.description}
+                              </p>
                             </div>
                             <div
                               className="w-7 h-7 rounded-lg bg-secondary/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
@@ -508,8 +568,8 @@ export function VoiceSearchInterface() {
                       <button
                         key={i}
                         onClick={() => {
-                          setQuery(suggestion)
-                          processWithAI(suggestion)
+                          setQuery(suggestion);
+                          processWithAI(suggestion);
                         }}
                         className="glass rounded-full px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-foreground/[0.02] dark:hover:bg-white/[0.05] transition-all focus-visible-ring"
                       >
@@ -525,14 +585,16 @@ export function VoiceSearchInterface() {
           {/* Empty State */}
           {!aiResponse && !isListening && !isProcessing && (
             <div className="text-center">
-              <p className="text-sm text-muted-foreground mb-3">{t.trySaying}:</p>
+              <p className="text-sm text-muted-foreground mb-3">
+                {t.trySaying}:
+              </p>
               <div className="flex flex-wrap justify-center gap-1.5">
                 {t.suggestions.map((suggestion, i) => (
                   <button
                     key={i}
                     onClick={() => {
-                      setQuery(suggestion)
-                      processWithAI(suggestion)
+                      setQuery(suggestion);
+                      processWithAI(suggestion);
                     }}
                     className="glass rounded-full px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-foreground/[0.02] dark:hover:bg-white/[0.05] transition-all focus-visible-ring"
                   >
@@ -549,7 +611,10 @@ export function VoiceSearchInterface() {
       <footer className="border-t border-border/20 py-4 px-6">
         <div className="max-w-2xl mx-auto flex items-center justify-between text-xs text-muted-foreground">
           <p>
-            {settings.language === "es-ES" ? "Idioma: Español" : "Language: English"} •{" "}
+            {settings.language === "es-ES"
+              ? "Idioma: Español"
+              : "Language: English"}{" "}
+            •{" "}
             {settings.voiceSpeed === "slow"
               ? "Velocidad lenta"
               : settings.voiceSpeed === "fast"
@@ -565,5 +630,5 @@ export function VoiceSearchInterface() {
         </div>
       </footer>
     </div>
-  )
+  );
 }

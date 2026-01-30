@@ -71,7 +71,7 @@ export function FeaturesSection() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (sectionRef.current) {
@@ -185,7 +185,7 @@ export function FeaturesSection() {
         </div>
 
         {/* Bottom highlight */}
-        <div
+        {/* <div
           className={`mt-20 text-center transition-all duration-700 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
@@ -209,7 +209,7 @@ export function FeaturesSection() {
               — Cumple con SOC2, GDPR y HIPAA
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

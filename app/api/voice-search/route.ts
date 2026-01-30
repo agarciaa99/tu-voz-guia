@@ -36,7 +36,7 @@ async function callGroqAPI(messages: GroqMessage[]): Promise<string> {
         temperature: 0.7,
         max_tokens: 1024,
       }),
-    }
+    },
   );
 
   if (!response.ok) {
@@ -60,15 +60,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Query is required" }, { status: 400 });
     }
 
-    // Check if query matches any custom command first
     const normalizedQuery = query.toLowerCase().trim();
     const matchedCommand = customCommands.find(
       (cmd: CustomCommand) =>
-        cmd.enabled && normalizedQuery.includes(cmd.phrase.toLowerCase())
+        cmd.enabled && normalizedQuery.includes(cmd.phrase.toLowerCase()),
     );
 
     if (matchedCommand) {
-      // Return custom command response
       return NextResponse.json({
         interpretation:
           language === "es-ES"
@@ -157,10 +155,8 @@ Please interpret this query and provide helpful results.`;
       { role: "user", content: userPrompt },
     ]);
 
-    // Parse the AI response
     let response;
     try {
-      // Extract JSON from the response (in case there's extra text)
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         response = JSON.parse(jsonMatch[0]);
@@ -168,7 +164,6 @@ Please interpret this query and provide helpful results.`;
         throw new Error("No JSON found in response");
       }
     } catch {
-      // Fallback response if parsing fails
       response = isSpanish
         ? {
             interpretation: `Entendí que estás buscando: "${query}"`,
@@ -179,7 +174,7 @@ Please interpret this query and provide helpful results.`;
                 title: `Resultados de búsqueda para "${query}"`,
                 description: "Haz clic para ver más resultados en la web",
                 url: `https://www.google.com/search?q=${encodeURIComponent(
-                  query
+                  query,
                 )}&hl=es`,
                 type: "web",
               },
@@ -199,7 +194,7 @@ Please interpret this query and provide helpful results.`;
                 title: `Search results for "${query}"`,
                 description: "Click to see more results on the web",
                 url: `https://www.google.com/search?q=${encodeURIComponent(
-                  query
+                  query,
                 )}`,
                 type: "web",
               },
@@ -217,7 +212,7 @@ Please interpret this query and provide helpful results.`;
     console.error("Voice search error:", error);
     return NextResponse.json(
       { error: "Failed to process voice search" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

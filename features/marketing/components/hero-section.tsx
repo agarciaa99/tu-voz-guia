@@ -96,8 +96,8 @@ export function HeroSection() {
           {/* Subheading */}
           <p className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-up delay-200 text-pretty">
             El primer navegador controlado 100% por voz. Eliminamos el ruido
-            visual, bloqueamos anuncios y te leemos solo lo que importa. La web,
-            finalmente accesible.
+            visual y te leemos solo lo que importa. La web, finalmente
+            accesible.
           </p>
 
           {/* CTA Buttons */}

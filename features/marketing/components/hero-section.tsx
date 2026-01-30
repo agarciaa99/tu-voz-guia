@@ -6,11 +6,11 @@ import { ArrowRight, Play, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 const typingPhrases = [
-  "Find the best sushi restaurants downtown...",
-  "What's the weather like this weekend?",
-  "Play something relaxing for focus...",
-  "Book a table for two tonight...",
-  "How do I get to the nearest airport?",
+  "Léeme las noticias de hoy...",
+  "Busca una receta de pasta y léeme los pasos...",
+  "Resume el contenido de esta página web...",
+  "¿Qué dice la imagen que está en el artículo?",
+  "Llena este formualrio con mis datos...",
 ];
 
 export function HeroSection() {
@@ -82,21 +82,22 @@ export function HeroSection() {
           <div className="mb-8 inline-flex items-center gap-2 rounded-full glass px-5 py-2 text-sm animate-fade-up">
             <Sparkles className="h-4 w-4 text-accent" />
             <span className="text-muted-foreground">
-              Introducing the future of search
+              Navegación web accesible e inteligente
             </span>
             <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
           </div>
 
           {/* Main heading */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight animate-fade-up delay-100">
-            <span className="block text-foreground">Beyond</span>
-            <span className="block gradient-text glow-text">Typing.</span>
+            <span className="block text-foreground">Internet</span>
+            <span className="block gradient-text glow-text">a tu manera.</span>
           </h1>
 
           {/* Subheading */}
           <p className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-up delay-200 text-pretty">
-            The first voice-native search engine. Speak naturally, get instant
-            answers. Powered by AI that truly understands you.
+            El primer navegador controlado 100% por voz. Eliminamos el ruido
+            visual, bloqueamos anuncios y te leemos solo lo que importa. La web,
+            finalmente accesible.
           </p>
 
           {/* CTA Buttons */}
@@ -213,7 +214,7 @@ export function HeroSection() {
                         </p>
                       ) : (
                         <p className="text-muted-foreground">
-                          Tap the microphone to start...
+                          Pulsa el micrófono para empezar...
                         </p>
                       )}
                     </div>
@@ -229,15 +230,19 @@ export function HeroSection() {
                   >
                     {[
                       {
-                        name: "Sushi Nakazawa",
-                        distance: "0.2 mi",
+                        name: "Pasta Boloñesa",
+                        distance: "30 min",
                         rating: "4.9",
                       },
-                      { name: "Masa", distance: "0.5 mi", rating: "4.8" },
                       {
-                        name: "Sukiyabashi Jiro",
-                        distance: "0.7 mi",
+                        name: "Pasta Primavera",
+                        distance: "20 min",
                         rating: "4.9",
+                      },
+                      {
+                        name: "Pasta Carbonara",
+                        distance: "25 min",
+                        rating: "4.8",
                       },
                     ].map((result, i) => (
                       <div
@@ -268,10 +273,10 @@ export function HeroSection() {
           {/* Stats */}
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-up delay-500">
             {[
-              { value: "50ms", label: "Response time" },
-              { value: "99.2%", label: "Accuracy" },
-              { value: "40+", label: "Languages" },
-              { value: "10M+", label: "Daily queries" },
+              { value: "50ms", label: "Tiempo de respuesta" },
+              { value: "99.2%", label: "Precisión" },
+              { value: "40+", label: "Idiomas" },
+              { value: "10mil+", label: "Peticiones diarias" },
             ].map((stat, i) => (
               <div
                 key={stat.label}

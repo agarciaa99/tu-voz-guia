@@ -49,16 +49,18 @@ export function Header() {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
-          {["Features", "How It Works", "Showcase", "Pricing"].map((item) => (
-            <Link
-              key={item}
-              href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-              className="relative px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground group"
-            >
-              {item}
-              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent rounded-full transition-all duration-300 group-hover:w-1/2" />
-            </Link>
-          ))}
+          {["Características", "Cómo Funciona", "Demo", "Costos"].map(
+            (item) => (
+              <Link
+                key={item}
+                href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                className="relative px-4 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground group"
+              >
+                {item}
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent rounded-full transition-all duration-300 group-hover:w-1/2" />
+              </Link>
+            )
+          )}
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
@@ -68,15 +70,15 @@ export function Header() {
             className="text-muted-foreground hover:text-foreground hover:bg-white/5"
             asChild
           >
-            <Link href="/auth/login">Log in</Link>
+            <Link href="/auth/login">Iniciar sesión</Link>
           </Button>
-          <Button
+          {/* <Button
             size="sm"
             className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 group"
           >
             <span className="relative z-10">Get Early Access</span>
             <div className="absolute inset-0 bg-gradient-to-r from-accent to-glow-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Button>
+          </Button> */}
         </div>
 
         <button
@@ -114,14 +116,14 @@ export function Header() {
             )}
             <div className="flex gap-3 pt-4 mt-2 border-t border-border/20">
               <Button variant="ghost" size="sm" className="flex-1" asChild>
-                <Link href="/auth/login">Log in</Link>
+                <Link href="/auth/login">Iniciar sesión</Link>
               </Button>
-              <Button
+              {/* <Button
                 size="sm"
                 className="flex-1 bg-gradient-to-r from-accent to-glow-secondary text-accent-foreground"
               >
                 Get Early Access
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

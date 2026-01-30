@@ -1,77 +1,80 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Mail, Lock, Loader2, ArrowRight } from "lucide-react"
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-      })
-      if (error) throw error
-      router.push("/app")
+      });
+      if (error) throw error;
+      router.push("/app");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleLogin = async () => {
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+    const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo:
-            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback?next=/app`,
+            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
+            `${window.location.origin}/auth/callback?next=/app`,
         },
-      })
-      if (error) throw error
+      });
+      if (error) throw error;
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
-      setIsLoading(false)
+      setError(error instanceof Error ? error.message : "An error occurred");
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="animate-fade-up">
       <div className="glass rounded-3xl p-8 glow-border">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back</h1>
-          <p className="text-muted-foreground">Sign in to continue to Voxera</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Bienvenido
+          </h1>
+          <p className="text-muted-foreground">Inicia sesión para continuar</p>
         </div>
 
         {/* Google Button */}
         <Button
           type="button"
           variant="outline"
-          className="w-full h-12 rounded-xl border-border/50 bg-white/5 hover:bg-white/10 hover:border-accent/50 transition-all duration-300 mb-6"
+          className="w-full h-12 rounded-xl border-border/50 bg-white/5 hover:bg-white/10 hover:text-accent hover:border-accent/50 transition-all duration-300 mb-6"
           onClick={handleGoogleLogin}
           disabled={isLoading}
         >
@@ -93,7 +96,7 @@ export default function LoginPage() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
+          Continuar con Google
         </Button>
 
         {/* Divider */}
@@ -102,7 +105,9 @@ export default function LoginPage() {
             <div className="w-full border-t border-border/30" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-3 text-muted-foreground">or continue with email</span>
+            <span className="bg-card px-3 text-muted-foreground">
+              o correo electrónico
+            </span>
           </div>
         </div>
 
@@ -117,7 +122,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="tu@ejemplo.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -129,10 +134,13 @@ export default function LoginPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className="text-foreground">
-                Password
+                Contraseña
               </Label>
-              <Link href="/auth/forgot-password" className="text-xs text-accent hover:text-accent/80 transition-colors">
-                Forgot password?
+              <Link
+                href="/auth/forgot-password"
+                className="text-xs text-accent hover:text-accent/80 transition-colors"
+              >
+                ¿Olvidaste tu contraseña?
               </Link>
             </div>
             <div className="relative">
@@ -163,12 +171,12 @@ export default function LoginPage() {
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Signing in...
+                Iniciando sesión...
               </>
             ) : (
               <>
                 <span className="relative z-10 flex items-center">
-                  Sign in
+                  Iniciar sesión
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-accent to-glow-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -179,12 +187,15 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <Link href="/auth/sign-up" className="text-accent hover:text-accent/80 font-medium transition-colors">
-            Sign up
+          ¿No tienes una cuenta?{" "}
+          <Link
+            href="/auth/sign-up"
+            className="text-accent hover:text-accent/80 font-medium transition-colors"
+          >
+            Regístrate
           </Link>
         </p>
       </div>
     </div>
-  )
+  );
 }

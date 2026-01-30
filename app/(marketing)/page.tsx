@@ -1,12 +1,12 @@
-import { Header } from "@/features/marketing/components/header"
-import { HeroSection } from "@/features/marketing/components/hero-section"
-import { LogoCloud } from "@/features/marketing/components/logo-cloud"
-import { FeaturesSection } from "@/features/marketing/components/features-section"
-import { ShowcaseSection } from "@/features/marketing/components/showcase-section"
-import { HowItWorksSection } from "@/features/marketing/components/how-it-works-section"
-import { TestimonialsSection } from "@/features/marketing/components/testimonials-section"
-import { CtaSection } from "@/features/marketing/components/cta-section"
-import { Footer } from "@/features/marketing/components/footer"
+import { Header } from "@/features/marketing/components/header";
+import { HeroSection } from "@/features/marketing/components/hero-section";
+import { LogoCloud } from "@/features/marketing/components/logo-cloud";
+import { FeaturesSection } from "@/features/marketing/components/features-section";
+import { ShowcaseSection } from "@/features/marketing/components/showcase-section";
+import { HowItWorksSection } from "@/features/marketing/components/how-it-works-section";
+import { TestimonialsSection } from "@/features/marketing/components/testimonials-section";
+import { CtaSection } from "@/features/marketing/components/cta-section";
+import { Footer } from "@/features/marketing/components/footer";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
       <div className="relative z-10">
         <Header />
         <HeroSection />
-        <LogoCloud />
+        {/* <LogoCloud /> */}
         <FeaturesSection />
         <ShowcaseSection />
         <HowItWorksSection />
@@ -28,5 +28,5 @@ export default function Home() {
         <Footer />
       </div>
     </main>
-  )
+  );
 }

@@ -1,41 +1,41 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Mail, Lock, Loader2, ArrowRight, User } from "lucide-react"
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Mail, Lock, Loader2, ArrowRight, User } from "lucide-react";
 
 export default function SignUpPage() {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+    e.preventDefault();
+    const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
-      setIsLoading(false)
-      return
+      setError("Passwords do not match");
+      setIsLoading(false);
+      return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters")
-      setIsLoading(false)
-      return
+      setError("Password must be at least 6 characters");
+      setIsLoading(false);
+      return;
     }
 
     try {
@@ -44,55 +44,59 @@ export default function SignUpPage() {
         password,
         options: {
           emailRedirectTo:
-            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback?next=/app`,
+            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
+            `${window.location.origin}/auth/callback?next=/app`,
           data: {
             full_name: name,
           },
         },
-      })
-      if (error) throw error
-      router.push("/auth/sign-up-success")
+      });
+      if (error) throw error;
+      router.push("/auth/sign-up-success");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleGoogleSignUp = async () => {
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
+    const supabase = createClient();
+    setIsLoading(true);
+    setError(null);
 
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo:
-            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/auth/callback?next=/app`,
+            process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ||
+            `${window.location.origin}/auth/callback?next=/app`,
         },
-      })
-      if (error) throw error
+      });
+      if (error) throw error;
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
-      setIsLoading(false)
+      setError(error instanceof Error ? error.message : "An error occurred");
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="animate-fade-up">
       <div className="glass rounded-3xl p-8 glow-border">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Create account</h1>
-          <p className="text-muted-foreground">Start your voice-first journey</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Regístrate
+          </h1>
+          <p className="text-muted-foreground">Empieza a navegar con tu voz</p>
         </div>
 
         {/* Google Button */}
         <Button
           type="button"
           variant="outline"
-          className="w-full h-12 rounded-xl border-border/50 bg-white/5 hover:bg-white/10 hover:border-accent/50 transition-all duration-300 mb-6"
+          className="w-full h-12 rounded-xl border-border/50 bg-white/5 hover:bg-white/10 hover:text-accent hover:border-accent/50 transition-all duration-300 mb-6"
           onClick={handleGoogleSignUp}
           disabled={isLoading}
         >
@@ -114,7 +118,7 @@ export default function SignUpPage() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
+          Continuar con Google
         </Button>
 
         {/* Divider */}
@@ -123,7 +127,9 @@ export default function SignUpPage() {
             <div className="w-full border-t border-border/30" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-3 text-muted-foreground">or continue with email</span>
+            <span className="bg-card px-3 text-muted-foreground">
+              o correo electrónico
+            </span>
           </div>
         </div>
 
@@ -131,14 +137,14 @@ export default function SignUpPage() {
         <form onSubmit={handleSignUp} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-foreground">
-              Full Name
+              Nombre Completo
             </Label>
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Tu nombre"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -156,7 +162,7 @@ export default function SignUpPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="tu@ejemplo.com"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -167,7 +173,7 @@ export default function SignUpPage() {
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-foreground">
-              Password
+              Contraseña
             </Label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -185,7 +191,7 @@ export default function SignUpPage() {
 
           <div className="space-y-2">
             <Label htmlFor="confirm-password" className="text-foreground">
-              Confirm Password
+              Confirmar Contraseña
             </Label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -215,12 +221,12 @@ export default function SignUpPage() {
             {isLoading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Creating account...
+                Creando cuenta...
               </>
             ) : (
               <>
                 <span className="relative z-10 flex items-center">
-                  Create account
+                  Crear cuenta
                   <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-accent to-glow-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -231,12 +237,15 @@ export default function SignUpPage() {
 
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-muted-foreground">
-          Already have an account?{" "}
-          <Link href="/auth/login" className="text-accent hover:text-accent/80 font-medium transition-colors">
-            Sign in
+          ¿Ya tienes una cuenta?{" "}
+          <Link
+            href="/auth/login"
+            className="text-accent hover:text-accent/80 font-medium transition-colors"
+          >
+            Iniciar sesión
           </Link>
         </p>
       </div>
     </div>
-  )
+  );
 }

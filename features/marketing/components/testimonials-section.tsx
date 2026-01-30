@@ -1,72 +1,74 @@
-"use client"
+"use client";
 
-import { useRef, useState, useEffect } from "react"
-import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react"
+import { useRef, useState, useEffect } from "react";
+import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 const testimonials = [
   {
     quote:
-      "Voxera has completely changed how I search for information. It's like having a conversation with the internet.",
-    author: "Sarah Chen",
-    role: "Product Designer at Figma",
-    avatar: "SC",
+      "Antes tardaba horas en comprar online porque los lectores de pantalla se trababan. Con esta app, encuentro y compro en minutos.",
+    author: "Laura Gómez",
+    role: "Programadora (Discapacidad visual)",
+    avatar: "LG",
     rating: 5,
   },
   {
     quote:
-      "The accuracy is unreal. It understands my accent perfectly and the results are always exactly what I'm looking for.",
-    author: "Marcus Johnson",
-    role: "Engineering Lead at Spotify",
-    avatar: "MJ",
+      "Lo mejor es la función de 'Resumir'. Ya no tengo que escuchar menús interminables para llegar a la noticia que quiero.",
+    author: "Miguel Ángel",
+    role: "Usuario de lector de pantalla",
+    avatar: "MA",
     rating: 5,
   },
   {
     quote:
-      "Finally, a voice search that actually works. The 50ms response time is not marketing — it's genuinely instant.",
-    author: "Emma Williams",
-    role: "CEO at TechFlow",
-    avatar: "EW",
+      "Por fin puedo entender los memes y fotos en redes sociales. La descripción de imágenes por IA es un cambio radical.",
+    author: "Sofía Ruiz",
+    role: "Estudiante de Periodismo",
+    avatar: "SR",
     rating: 5,
   },
   {
     quote:
-      "We integrated Voxera into our app and user engagement increased by 340%. The API is incredibly well designed.",
-    author: "David Park",
-    role: "CTO at HealthAI",
-    avatar: "DP",
+      "La navegación por voz es tan fluida que a veces olvido que estoy navegando en una web compleja. Es pura accesibilidad.",
+    author: "Dr. Jorge P.",
+    role: "Consultor de Accesibilidad Digital",
+    avatar: "JP",
     rating: 5,
   },
-]
+];
 
 export function TestimonialsSection() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setIsVisible(true);
         }
       },
-      { threshold: 0.1 },
-    )
+      { threshold: 0.1 }
+    );
 
     if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+      observer.observe(sectionRef.current);
     }
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   const nextTestimonial = () => {
-    setActiveIndex((prev) => (prev + 1) % testimonials.length)
-  }
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  };
 
   const prevTestimonial = () => {
-    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
+    setActiveIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
+  };
 
   return (
     <section className="relative py-32 overflow-hidden" ref={sectionRef}>
@@ -80,23 +82,33 @@ export function TestimonialsSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <div
-            className={`inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-sm mb-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-sm mb-6 transition-all duration-700 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
           >
             <Star className="w-4 h-4 text-accent fill-accent" />
-            <span className="text-muted-foreground">Loved by thousands</span>
+            <span className="text-muted-foreground">Amado por miles</span>
           </div>
 
           <h2
-            className={`text-4xl sm:text-5xl font-bold tracking-tight transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`text-4xl sm:text-5xl font-bold tracking-tight transition-all duration-700 delay-100 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
           >
-            <span className="text-foreground">What people are </span>
-            <span className="gradient-text">saying</span>
+            <span className="text-foreground">Lo que la gente </span>
+            <span className="gradient-text">está diciendo</span>
           </h2>
         </div>
 
         {/* Testimonial carousel */}
         <div
-          className={`relative max-w-4xl mx-auto transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`relative max-w-4xl mx-auto transition-all duration-700 delay-200 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
         >
           {/* Main testimonial */}
           <div className="relative glass rounded-3xl p-8 sm:p-12 glow-border">
@@ -119,7 +131,10 @@ export function TestimonialsSection() {
                   {/* Stars */}
                   <div className="flex gap-1 mb-6">
                     {Array.from({ length: testimonial.rating }).map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
+                      <Star
+                        key={i}
+                        className="w-5 h-5 text-amber-400 fill-amber-400"
+                      />
                     ))}
                   </div>
 
@@ -134,8 +149,12 @@ export function TestimonialsSection() {
                       {testimonial.avatar}
                     </div>
                     <div>
-                      <p className="font-semibold text-foreground">{testimonial.author}</p>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                      <p className="font-semibold text-foreground">
+                        {testimonial.author}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {testimonial.role}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -168,7 +187,9 @@ export function TestimonialsSection() {
                 key={index}
                 onClick={() => setActiveIndex(index)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === index ? "w-8 bg-accent" : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
+                  activeIndex === index
+                    ? "w-8 bg-accent"
+                    : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
@@ -178,21 +199,27 @@ export function TestimonialsSection() {
 
         {/* Company logos */}
         <div
-          className={`mt-20 transition-all duration-700 delay-400 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          className={`mt-20 transition-all duration-700 delay-400 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
         >
-          <p className="text-center text-sm text-muted-foreground mb-8">Trusted by teams at world-class companies</p>
+          <p className="text-center text-sm text-muted-foreground mb-8">
+            Trusted by teams at world-class companies
+          </p>
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-6">
-            {["Figma", "Spotify", "Notion", "Linear", "Vercel", "Stripe"].map((company) => (
-              <span
-                key={company}
-                className="text-xl font-bold text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
-              >
-                {company}
-              </span>
-            ))}
+            {["Figma", "Spotify", "Notion", "Linear", "Vercel", "Stripe"].map(
+              (company) => (
+                <span
+                  key={company}
+                  className="text-xl font-bold text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
+                >
+                  {company}
+                </span>
+              )
+            )}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

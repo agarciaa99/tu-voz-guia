@@ -1,71 +1,92 @@
-"use client"
+"use client";
 
-import { useRef, useEffect, useState } from "react"
-import { Mic, Zap, Globe, Brain, Shield, Sparkles, Waves, Languages, Lock, Cpu } from "lucide-react"
+import { useRef, useEffect, useState } from "react";
+import {
+  Mic,
+  Zap,
+  Globe,
+  Brain,
+  Shield,
+  Sparkles,
+  Waves,
+  Languages,
+  Lock,
+  Cpu,
+} from "lucide-react";
 
 const features = [
   {
     icon: Mic,
-    title: "Natural Voice Input",
-    description: "Speak naturally in any language. Our AI understands context, accents, and conversational nuance.",
+    title: "Comandos de Voz Web",
+    description:
+      "Controla el navegador: 'Atrás', 'Buscar en Google', 'Ir a Youtube'. Olvídate del teclado y el mouse.",
     gradient: "from-accent to-glow-secondary",
   },
   {
     icon: Zap,
-    title: "50ms Response",
-    description: "Get answers before you finish speaking. Real-time processing with zero perceptible latency.",
+    title: "Resumidor de Sitios",
+    description:
+      "¿Páginas muy largas? Obtén un resumen instantáneo del contenido antes de decidir si quieres escucharlo todo.",
     gradient: "from-amber-400 to-orange-500",
   },
   {
     icon: Brain,
-    title: "Contextual AI",
-    description: "Advanced neural networks that learn your preferences and understand multi-turn conversations.",
+    title: "Detector de Elementos",
+    description:
+      "La IA identifica botones, formularios y encabezados ocultos para que siempre sepas dónde estás en la página.",
     gradient: "from-purple-400 to-pink-500",
   },
   {
     icon: Globe,
     title: "40+ Languages",
-    description: "Seamless multilingual support with automatic language detection and native-quality translation.",
+    description:
+      "Seamless multilingual support with automatic language detection and native-quality translation.",
     gradient: "from-blue-400 to-indigo-500",
   },
   {
     icon: Shield,
-    title: "Zero Data Retention",
-    description: "Your voice is processed and instantly forgotten. No recordings, no transcripts, no traces.",
+    title: "Modo Incógnito Real",
+    description:
+      "Navegación privada que no guarda historial de voz ni datos de formularios. Seguridad total.",
     gradient: "from-emerald-400 to-green-500",
   },
   {
     icon: Sparkles,
-    title: "Predictive Results",
-    description: "AI that anticipates your needs, surfacing relevant results before you even ask.",
+    title: "Descripción de Imágenes",
+    description:
+      "Si una web no tiene 'Alt Text', nuestra IA analiza la foto y te cuenta exactamente qué hay en ella.",
     gradient: "from-rose-400 to-red-500",
   },
-]
+];
 
 export function FeaturesSection() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
+          setIsVisible(true);
         }
       },
-      { threshold: 0.1 },
-    )
+      { threshold: 0.1 }
+    );
 
     if (sectionRef.current) {
-      observer.observe(sectionRef.current)
+      observer.observe(sectionRef.current);
     }
 
-    return () => observer.disconnect()
-  }, [])
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="features" className="relative py-32 overflow-hidden" ref={sectionRef}>
+    <section
+      id="features"
+      className="relative py-32 overflow-hidden"
+      ref={sectionRef}
+    >
       {/* Background decoration */}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[150px] -translate-y-1/2 -translate-x-1/2" />
       <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-glow-secondary/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2" />
@@ -74,24 +95,37 @@ export function FeaturesSection() {
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center mb-20">
           <div
-            className={`inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-sm mb-6 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-sm mb-6 transition-all duration-700 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
           >
             <Waves className="w-4 h-4 text-accent" />
-            <span className="text-muted-foreground">Capabilities</span>
+            <span className="text-muted-foreground">Capacidades</span>
           </div>
 
           <h2
-            className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight transition-all duration-700 delay-100 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight transition-all duration-700 delay-100 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
           >
-            <span className="text-foreground">Built for the </span>
-            <span className="gradient-text">voice-first</span>
-            <span className="text-foreground"> era</span>
+            <span className="text-foreground">Construido para la </span>
+            <span className="gradient-text">era de la voz</span>
+            {/* <span className="text-foreground"> era</span> */}
           </h2>
 
           <p
-            className={`mt-6 text-lg text-muted-foreground max-w-xl mx-auto transition-all duration-700 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+            className={`mt-6 text-lg text-muted-foreground max-w-xl mx-auto transition-all duration-700 delay-200 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4"
+            }`}
           >
-            Every feature designed to make voice search feel invisible, instant, and effortless.
+            Cada función diseñada para hacer que la búsqueda por voz se sienta
+            invisible, instantánea y sin esfuerzo.
           </p>
         </div>
 
@@ -100,7 +134,11 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className={`group relative transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              className={`group relative transition-all duration-700 ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
               style={{ transitionDelay: `${300 + index * 100}ms` }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -135,7 +173,9 @@ export function FeaturesSection() {
                 <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-foreground transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">{feature.description}</p>
+                <p className="text-muted-foreground leading-relaxed text-sm">
+                  {feature.description}
+                </p>
 
                 {/* Animated line */}
                 <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-accent to-glow-secondary group-hover:w-full transition-all duration-500" />
@@ -146,7 +186,9 @@ export function FeaturesSection() {
 
         {/* Bottom highlight */}
         <div
-          className={`mt-20 text-center transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+          className={`mt-20 text-center transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
           style={{ transitionDelay: "900ms" }}
         >
           <div className="inline-flex items-center gap-3 glass rounded-full px-6 py-3">
@@ -161,11 +203,14 @@ export function FeaturesSection() {
               ))}
             </div>
             <span className="text-sm text-muted-foreground">
-              <span className="text-foreground font-medium">Enterprise ready</span> — SOC2, GDPR, HIPAA compliant
+              <span className="text-foreground font-medium">
+                Listo para empresas
+              </span>{" "}
+              — Cumple con SOC2, GDPR y HIPAA
             </span>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

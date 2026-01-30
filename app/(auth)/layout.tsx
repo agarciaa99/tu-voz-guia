@@ -17,7 +17,7 @@ export default function AuthLayout({
       <div className="fixed top-6 left-6 z-50">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative flex h-10 w-10 items-center justify-center">
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent to-glow-secondary opacity-80 blur-sm group-hover:blur-md transition-all duration-300" />
+            {/* <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-accent to-glow-secondary opacity-80 blur-sm group-hover:blur-md transition-all duration-300" />
             <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-accent to-glow-secondary">
               <svg
                 className="h-5 w-5 text-accent-foreground"
@@ -32,7 +32,7 @@ export default function AuthLayout({
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" x2="12" y1="19" y2="22" />
               </svg>
-            </div>
+            </div> */}
           </div>
           <span className="text-xl font-bold tracking-tight text-foreground">
             TuVozGuía

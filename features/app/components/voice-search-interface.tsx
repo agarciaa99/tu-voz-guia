@@ -6,6 +6,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useVoiceRecognition } from "@/features/app/hooks/use-voice-recognition";
 import { useSettings } from "@/lib/settings-context";
+import { useWebViewer } from "@/features/app/components/web-viewer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -40,10 +41,13 @@ interface AIResponse {
   suggestions: string[];
   customCommandTriggered?: boolean;
   commandUrl?: string;
+  autoOpen?: boolean;
+  autoOpenUrl?: string;
 }
 
 export function VoiceSearchInterface() {
   const { settings } = useSettings();
+  const { openUrl } = useWebViewer();
   const [query, setQuery] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [aiResponse, setAiResponse] = useState<AIResponse | null>(null);
@@ -119,8 +123,12 @@ export function VoiceSearchInterface() {
           speak(data.interpretation);
         }
 
-        if (data.customCommandTriggered && data.commandUrl) {
-          window.open(data.commandUrl, "_blank", "noopener,noreferrer");
+        // Auto-open URL en el visor web embebido
+        if (data.autoOpen && data.autoOpenUrl) {
+          openUrl(data.autoOpenUrl, data.results?.[0]?.title || "Resultado");
+          speak(data.interpretation);
+        } else if (data.customCommandTriggered && data.commandUrl) {
+          openUrl(data.commandUrl, "Comando personalizado");
         }
       } catch (error) {
         console.error("AI processing error:", error);
@@ -137,6 +145,7 @@ export function VoiceSearchInterface() {
       settings.customCommands,
       settings.language,
       t,
+      openUrl,
     ],
   );
 
@@ -255,12 +264,18 @@ export function VoiceSearchInterface() {
               }`}
             >
               {feedbackType === "error" ? (
-                <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+                <AlertCircle
+                  className="w-4 h-4 flex-shrink-0"
+                  aria-hidden="true"
+                />
               ) : feedbackType === "success" ? (
-                <Sparkles className="w-4 h-4 shrink-0" aria-hidden="true" />
+                <Sparkles
+                  className="w-4 h-4 flex-shrink-0"
+                  aria-hidden="true"
+                />
               ) : (
                 <Volume2
-                  className="w-4 h-4 shrink-0 animate-pulse"
+                  className="w-4 h-4 flex-shrink-0 animate-pulse"
                   aria-hidden="true"
                 />
               )}
@@ -307,8 +322,8 @@ export function VoiceSearchInterface() {
               <div
                 className={`relative w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isListening
-                    ? "bg-linear-to-br from-accent to-glow-secondary shadow-xl shadow-accent/40 scale-105"
-                    : "bg-linear-to-br from-secondary to-muted hover:from-secondary/80 hover:to-muted/80 group-hover:scale-105 group-hover:shadow-lg"
+                    ? "bg-gradient-to-br from-accent to-glow-secondary shadow-xl shadow-accent/40 scale-105"
+                    : "bg-gradient-to-br from-secondary to-muted hover:from-secondary/80 hover:to-muted/80 group-hover:scale-105 group-hover:shadow-lg"
                 } ${!isSupported || isProcessing ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
               >
                 {isProcessing ? (
@@ -458,7 +473,10 @@ export function VoiceSearchInterface() {
               className="mb-6 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center gap-3"
               role="alert"
             >
-              <AlertCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+              <AlertCircle
+                className="w-4 h-4 flex-shrink-0"
+                aria-hidden="true"
+              />
               <span className="text-sm">{t.browserNotSupported}</span>
             </div>
           )}
@@ -474,7 +492,7 @@ export function VoiceSearchInterface() {
               <div className="glass rounded-2xl p-5 glow-border">
                 <div className="flex items-start gap-3">
                   <div
-                    className="w-9 h-9 rounded-xl bg-linear-to-br from-accent to-glow-secondary flex items-center justify-center shrink-0"
+                    className="w-9 h-9 rounded-xl bg-gradient-to-br from-accent to-glow-secondary flex items-center justify-center flex-shrink-0"
                     aria-hidden="true"
                   >
                     <Sparkles className="w-4 h-4 text-accent-foreground" />

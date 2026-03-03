@@ -48,10 +48,10 @@ export function AppHeader({ user }: AppHeaderProps) {
         <Link
           href="/app"
           className="flex items-center gap-3 group focus-visible-ring rounded-lg"
-          aria-label="TuVozGuía - Ir al inicio"
+          aria-label="Voxera - Ir al inicio"
         >
           <div className="relative flex h-9 w-9 items-center justify-center">
-            {/* <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-accent to-glow-secondary opacity-80 blur-sm group-hover:blur-md transition-all duration-300" />
+            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-accent to-glow-secondary opacity-80 blur-sm group-hover:blur-md transition-all duration-300" />
             <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-accent to-glow-secondary">
               <svg
                 className="h-4 w-4 text-accent-foreground"
@@ -67,10 +67,10 @@ export function AppHeader({ user }: AppHeaderProps) {
                 <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
                 <line x1="12" x2="12" y1="19" y2="22" />
               </svg>
-            </div> */}
+            </div>
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground">
-            TuVozGuía
+            Voxera
           </span>
         </Link>
 

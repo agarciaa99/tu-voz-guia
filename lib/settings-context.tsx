@@ -59,7 +59,7 @@ interface SettingsContextType {
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
@@ -68,7 +68,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   // Load settings from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem("tuvozguia-settings");
+    const stored = localStorage.getItem("voxera-settings");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -83,7 +83,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   // Save settings to localStorage when they change
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("tuvozguia-settings", JSON.stringify(settings));
+      localStorage.setItem("voxera-settings", JSON.stringify(settings));
 
       // Apply accessibility settings to document
       const root = document.documentElement;
@@ -133,7 +133,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setSettings((prev) => ({
       ...prev,
       customCommands: prev.customCommands.map((cmd) =>
-        cmd.id === id ? { ...cmd, ...updates } : cmd
+        cmd.id === id ? { ...cmd, ...updates } : cmd,
       ),
     }));
   };
@@ -147,7 +147,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const resetSettings = () => {
     setSettings(defaultSettings);
-    localStorage.removeItem("tuvozguia-settings");
+    localStorage.removeItem("voxera-settings");
   };
 
   return (

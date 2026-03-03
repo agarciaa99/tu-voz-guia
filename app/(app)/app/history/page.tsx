@@ -1,15 +1,34 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft, History, Search, Mic } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, History, Search, Mic } from "lucide-react";
 
 export default function HistoryPage() {
-  // This would normally fetch from a database
   const searches = [
-    { id: 1, query: "What's the weather today?", timestamp: "2 hours ago", type: "voice" },
-    { id: 2, query: "Find Italian restaurants nearby", timestamp: "Yesterday", type: "voice" },
-    { id: 3, query: "Best productivity apps 2024", timestamp: "3 days ago", type: "text" },
-    { id: 4, query: "How to make pasta carbonara", timestamp: "1 week ago", type: "voice" },
-  ]
+    {
+      id: 1,
+      query: "What's the weather today?",
+      timestamp: "2 hours ago",
+      type: "voice",
+    },
+    {
+      id: 2,
+      query: "Find Italian restaurants nearby",
+      timestamp: "Yesterday",
+      type: "voice",
+    },
+    {
+      id: 3,
+      query: "Best productivity apps 2024",
+      timestamp: "3 days ago",
+      type: "text",
+    },
+    {
+      id: 4,
+      query: "How to make pasta carbonara",
+      timestamp: "1 week ago",
+      type: "voice",
+    },
+  ];
 
   return (
     <div className="min-h-[calc(100vh-5rem)] px-6 py-12">
@@ -22,8 +41,12 @@ export default function HistoryPage() {
             </Link>
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Search History</h1>
-            <p className="text-muted-foreground">Your recent voice and text searches</p>
+            <h1 className="text-2xl font-bold text-foreground">
+              Search History
+            </h1>
+            <p className="text-muted-foreground">
+              Your recent voice and text searches
+            </p>
           </div>
         </div>
 
@@ -47,7 +70,9 @@ export default function HistoryPage() {
               </div>
               <div className="flex-1">
                 <p className="text-foreground">{search.query}</p>
-                <p className="text-xs text-muted-foreground">{search.timestamp}</p>
+                <p className="text-xs text-muted-foreground">
+                  {search.timestamp}
+                </p>
               </div>
             </div>
           ))}
@@ -59,8 +84,12 @@ export default function HistoryPage() {
             <div className="w-16 h-16 rounded-full bg-secondary/50 flex items-center justify-center mx-auto mb-4">
               <History className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-medium text-foreground mb-2">No search history yet</h3>
-            <p className="text-muted-foreground mb-6">Your voice and text searches will appear here</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">
+              No search history yet
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              Your voice and text searches will appear here
+            </p>
             <Button asChild>
               <Link href="/app">Start searching</Link>
             </Button>
@@ -68,5 +97,5 @@ export default function HistoryPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

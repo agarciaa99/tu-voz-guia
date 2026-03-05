@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "lint": "eslint .",
     "start": "next start"
   },
   "dependencies": {
+    "@ai-sdk/groq": "3.0.4",
     "@hookform/resolvers": "^3.10.0",
+    "@mozilla/readability": "^0.6.0",
     "@radix-ui/react-accordion": "1.2.2",
     "@radix-ui/react-alert-dialog": "1.1.4",
     "@radix-ui/react-aspect-ratio": "1.1.1",
@@ -47,7 +49,10 @@
     "cmdk": "1.0.4",
     "date-fns": "4.1.0",
     "embla-carousel-react": "8.5.1",
+    "framer-motion": "12.33.0",
+    "groq-sdk": "0.37.0",
     "input-otp": "1.4.1",
+    "jsdom": "^28.1.0",
     "lucide-react": "^0.454.0",
     "next": "16.0.10",
     "next-themes": "^0.4.6",
@@ -61,10 +66,7 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
-    "zod": "3.25.76",
-    "@ai-sdk/groq": "3.0.4",
-    "framer-motion": "12.33.0",
-    "groq-sdk": "0.37.0"
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
